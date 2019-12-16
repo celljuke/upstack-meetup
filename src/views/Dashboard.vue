@@ -1,51 +1,41 @@
 <template>
-  <div class="dashboard">
+  <div class="dashboard" v-if="!appLoading">
     <div class="dashboard__left">
       <meetup-logo />
       <span class="dashboard__left__logo-label">meetup</span>
       <div class="dashboard__left__avatar">
         <up-avatar :avatar-image="userInfo.avatar" :size="100" />
         <span class="dashboard__left__avatar__name">{{ userInfo.name }}</span>
-        <span class="dashboard__left__avatar__location">{{
+        <span class="dashboard__left__avatar__location">
+          {{
           userInfo.location
-        }}</span>
+          }}
+        </span>
       </div>
       <div class="dashboard__left__statistics">
         <div class="dashboard__left__statistics__statistic">
-          <span class="dashboard__left__statistics__statistic__label"
-            >Places</span
-          >
+          <span class="dashboard__left__statistics__statistic__label">Places</span>
           <span class="dashboard__left__statistics__statistic__value">29</span>
         </div>
         <div class="dashboard__left__statistics__statistic">
-          <span class="dashboard__left__statistics__statistic__label"
-            >Friends</span
-          >
+          <span class="dashboard__left__statistics__statistic__label">Friends</span>
           <span class="dashboard__left__statistics__statistic__value">56</span>
         </div>
       </div>
       <div class="dashboard__left__divider"></div>
       <div class="dashboard__left__menu">
         <div class="dashboard__left__menu__item">
-          <router-link
-            to="/find-your-friends"
-            class="dashboard__left__menu__item__link"
-          >
-            <span class="dashboard__left__menu__item__link__label"
-              >Find your friends</span
-            >
+          <router-link to="/find-your-friends" class="dashboard__left__menu__item__link">
+            <span class="dashboard__left__menu__item__link__label">Find your friends</span>
           </router-link>
         </div>
         <div class="dashboard__left__menu__item">
           <router-link to="/messages" class="dashboard__left__menu__item__link">
-            <span class="dashboard__left__menu__item__link__label"
-              >Messages</span
-            >
+            <span class="dashboard__left__menu__item__link__label">Messages</span>
             <span
               class="dashboard__left__menu__item__link__count"
               v-if="messagesCount"
-              >{{ messagesCount }}</span
-            >
+            >{{ messagesCount }}</span>
           </router-link>
         </div>
         <div class="dashboard__left__menu__item">
@@ -54,13 +44,8 @@
           </router-link>
         </div>
         <div class="dashboard__left__menu__item">
-          <router-link
-            to="/where-to-next"
-            class="dashboard__left__menu__item__link"
-          >
-            <span class="dashboard__left__menu__item__link__label"
-              >Where to next?</span
-            >
+          <router-link to="/where-to-next" class="dashboard__left__menu__item__link">
+            <span class="dashboard__left__menu__item__link__label">Where to next?</span>
           </router-link>
         </div>
       </div>
@@ -73,6 +58,9 @@
       <router-view />
     </div>
   </div>
+  <div class="page-loader" v-else>
+    <up-loader />
+  </div>
 </template>
 
 <script>
@@ -81,13 +69,26 @@ import Logout from '@/assets/images/icons/logout.svg';
 import UpAvatar from '@/components/UpAvatar.vue';
 import AvatarImage from '@/assets/sk.jpeg';
 import { mapState, mapActions } from 'vuex';
-
+import UpLoader from '@/components/UpLoader';
 export default {
   name: 'Dashboard',
+  data() {
+    return {
+      appLoading: true
+    };
+  },
   components: {
     MeetupLogo,
     UpAvatar,
-    Logout
+    Logout,
+    UpLoader
+  },
+  async created() {
+    const currentUser = JSON.parse(localStorage.getItem('activeUser'));
+    await this.getAllUsers();
+    await this.getAllLocations();
+    await this.getMyMessages(currentUser.uid);
+    this.appLoading = false;
   },
   computed: {
     ...mapState('authentication', ['user']),
@@ -102,19 +103,24 @@ export default {
       return {
         name: `${currentUser.first_name} ${currentUser.last_name}`,
         avatar: currentUser.avatar,
-        location: `${userLocation.city}, ${userLocation.country}`
+        location: `${userLocation && userLocation.city}, ${userLocation &&
+          userLocation.country}`
       };
     },
     messagesCount() {
-      const currentUser = JSON.parse(localStorage.getItem('activeUser'));
-      return this.messages.filter(m => m.to_uid === currentUser.uid).length;
+      return this.messages && this.messages.length;
     },
     avatarImage() {
       return AvatarImage;
     }
   },
   methods: {
-    ...mapActions('authentication', ['logout'])
+    ...mapActions('authentication', ['logout']),
+    ...mapActions('locations', [
+      'getAllUsers',
+      'getMyMessages',
+      'getAllLocations'
+    ])
   }
 };
 </script>
@@ -258,5 +264,15 @@ export default {
     flex: 1;
     box-shadow: -9px 0px 10px -8px rgba(0, 0, 0, 0.08);
   }
+}
+
+.page-loader {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

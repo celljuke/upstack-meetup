@@ -1,18 +1,18 @@
 <template>
   <div class="user-list-item" @click="goToDetail">
-    <up-avatar
-      :avatar-image="userInfo.avatar"
-      :size="50"
-      line-color="#008EF4"
-    />
+    <up-avatar :avatar-image="userInfo.avatar" :size="50" line-color="#008EF4" />
     <div class="user-list-item__user-info">
       <div class="user-list-item__user-info__user-name">
-        <span class="user-list-item__user-info__user-name__name">{{
+        <span class="user-list-item__user-info__user-name__name">
+          {{
           userInfo.name
-        }}</span>
-        <span class="user-list-item__user-info__user-name__location">{{
+          }}
+        </span>
+        <span class="user-list-item__user-info__user-name__location">
+          {{
           userInfo.location
-        }}</span>
+          }}
+        </span>
       </div>
     </div>
   </div>
@@ -27,7 +27,7 @@ export default {
     src: String,
     name: String,
     location: String,
-    userId: String,
+    linkId: [String, Number],
     user: Object
   },
   components: {
@@ -49,7 +49,7 @@ export default {
   },
   methods: {
     goToDetail() {
-      this.$emit('click', this.userId);
+      this.$emit('click', this.linkId);
     }
   }
 };

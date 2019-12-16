@@ -4,22 +4,25 @@ export default {
   async getAllUsers({ commit }) {
     return new Promise(async (resolve, reject) => {
       const { data } = await axiosInstance.get('users');
+      await commit('SET_USERS', data);
       resolve(data);
-      commit('SET_USERS', data);
     });
   },
   async getAllLocations({ commit }) {
     return new Promise(async (resolve, reject) => {
       const { data } = await axiosInstance.get('locations');
+      await commit('SET_LOCATIONS', data);
       resolve(data);
-      commit('SET_LOCATIONS', data);
     });
   },
-  async getAllMessages({ commit }) {
+  async getMyMessages({ commit }, to_uid) {
     return new Promise(async (resolve, reject) => {
-      const { data } = await axiosInstance.get('messages');
+      const { data } = await axiosInstance.get('messages', {
+        params: { to_uid }
+      });
+
+      await commit('SET_MESSAGES', data);
       resolve(data);
-      commit('SET_MESSAGES', data);
     });
   },
   getUsersbyCoord({ commit }, coords) {

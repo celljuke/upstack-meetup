@@ -44,17 +44,6 @@
                   font-size="18px"
                   @click="submitLogin"
                 />
-                <up-button
-                  label="Continue with Google"
-                  button-type="line"
-                  label-color="#008FF4"
-                  line-color="#008FF4"
-                  width="100%"
-                  height="50px"
-                  font-size="18px"
-                  icon="gmail"
-                  icon-align="right"
-                />
               </div>
               <div class="form-elements__forgot">Forgot Password?</div>
             </div>

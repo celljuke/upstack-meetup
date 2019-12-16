@@ -7,6 +7,7 @@ import Dashboard from '../views/Dashboard.vue';
 import Search from '../views/Search.vue';
 import UserDetail from '../views/UserDetail.vue';
 import Messages from '../views/Messages.vue';
+import MessageDetail from '../views/MessageDetail.vue';
 import Invite from '../views/Invite.vue';
 
 Vue.use(VueRouter);
@@ -60,7 +61,17 @@ const routes = [
         component: Messages,
         meta: {
           requiresAuth: true
-        }
+        },
+        children: [
+          {
+            path: '/message/:id',
+            name: 'messageDetail',
+            component: MessageDetail,
+            meta: {
+              requiresAuth: true
+            }
+          }
+        ]
       },
       {
         path: '/invite',

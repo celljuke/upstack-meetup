@@ -14,14 +14,25 @@
             <h1>Create an account</h1>
             <div class="form-elements">
               <up-input
-                v-model="name"
-                placeholder="Name"
+                v-model="firstName"
+                placeholder="First name"
                 type="text"
-                name="name"
-                @focus="setActive('name', true)"
-                @blur="setActive('name', false)"
+                name="firstName"
+                @focus="setActive('firstName', true)"
+                @blur="setActive('firstName', false)"
                 :height="55"
-                :is-active="hasActive('name') || !!name.length"
+                :is-active="hasActive('firstName') || !!firstName.length"
+                bg-color="#EAEAEA"
+              />
+              <up-input
+                v-model="lastName"
+                placeholder="Last name"
+                type="text"
+                name="lastName"
+                @focus="setActive('lastName', true)"
+                @blur="setActive('lastName', false)"
+                :height="55"
+                :is-active="hasActive('lastName') || !!lastName.length"
                 bg-color="#EAEAEA"
               />
               <up-input
@@ -53,17 +64,7 @@
                   width="100%"
                   height="50px"
                   font-size="18px"
-                />
-                <up-button
-                  label="Continue with Google"
-                  button-type="line"
-                  label-color="#008FF4"
-                  line-color="#008FF4"
-                  width="100%"
-                  height="50px"
-                  font-size="18px"
-                  icon="gmail"
-                  icon-align="right"
+                  @click="submitRegister"
                 />
               </div>
             </div>
@@ -79,6 +80,8 @@ import HomeIllustration from '@/assets/onboarding-img.svg';
 import UpstackLogo from '@/assets/upstack-logo.svg';
 import UpButton from '@/components/UpButton';
 import UpInput from '@/components/UpInput';
+import { createNamespacedHelpers } from 'vuex';
+const { mapActions } = createNamespacedHelpers('authentication');
 export default {
   name: 'Register',
   components: {
@@ -89,13 +92,15 @@ export default {
   },
   data() {
     return {
-      name: '',
+      firstName: '',
+      lastName: '',
       email: '',
       password: '',
       activeInputs: []
     };
   },
   methods: {
+    ...mapActions(['register']),
     setActive(type, add) {
       if (add) {
         this.activeInputs.push(type);
@@ -105,6 +110,21 @@ export default {
     },
     hasActive(type) {
       return !!this.activeInputs.find(a => a === type);
+    },
+    submitRegister() {
+      const credendials = {
+        user: {
+          first_name: this.firstName,
+          last_name: this.lastName,
+          email: this.email,
+          password: this.password
+        }
+      };
+      this.register(credendials)
+        .then(({ data }) => {
+          this.$router.push(this.$route.query.redirect || '/dashboard');
+        })
+        .catch(error => {});
     }
   }
 };

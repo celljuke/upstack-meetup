@@ -1,31 +1,13 @@
 <template>
   <div id="app">
-    <router-view v-if="!appLoading" />
+    <router-view />
   </div>
 </template>
 <script>
 import { createNamespacedHelpers } from 'vuex';
 const { mapActions } = createNamespacedHelpers('locations');
 export default {
-  name: 'App',
-  data() {
-    return {
-      appLoading: true
-    };
-  },
-  async created() {
-    if (localStorage.getItem('token')) {
-      await this.getAllUsers();
-      await this.getAllMessages();
-      await this.getAllLocations();
-      this.appLoading = false;
-    } else {
-      this.appLoading = false;
-    }
-  },
-  methods: {
-    ...mapActions(['getAllUsers', 'getAllMessages', 'getAllLocations'])
-  }
+  name: 'App'
 };
 </script>
 <style lang="scss">

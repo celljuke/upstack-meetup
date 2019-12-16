@@ -19,7 +19,7 @@
           v-for="user in filteredUsers"
           :key="user.id"
           @click="goToUserDetail"
-          :userId="user.uid"
+          :linkId="user.uid"
           :user="user"
         />
       </div>
@@ -31,8 +31,7 @@
         :center="mapPos"
         :zoom="10"
         style="width: 100%; height: 100%"
-      >
-      </GmapMap>
+      ></GmapMap>
       <router-view />
     </div>
   </div>
@@ -61,12 +60,27 @@ export default {
     this.getLocation();
   },
   computed: {
-    ...mapState('locations', ['users']),
+    ...mapState('locations', ['users', 'allLocations']),
     isRouteUserDetail() {
       return this.$route.name === 'userDetail';
     },
     filteredUsers() {
-      return this.users.filter(u => u.id < 20);
+      const usersWithLocations = this.users.map(user => {
+        const location = this.allLocations.find(l => l.user_uid === user.uid);
+        return {
+          ...user,
+          location
+        };
+      });
+      if (this.mapPos && this.mapPos.name) {
+        return usersWithLocations.filter(
+          u =>
+            u.location.city == this.mapPos.name ||
+            u.location.country == this.mapPos.name
+        );
+      }
+
+      return usersWithLocations.filter(u => u.id < 20);
     }
   },
   methods: {
@@ -90,17 +104,16 @@ export default {
           const { data: locationsData } = await this.getUsersbyCoord(
             this.mapPos
           );
-          console.log(locationsData);
         });
       }
     },
     async getPlace(place) {
       this.mapPos = {
         lat: place.geometry.location.lat(),
-        lng: place.geometry.location.lng()
+        lng: place.geometry.location.lng(),
+        name: place.name
       };
       const { data: locationsData } = await this.getUsersbyCoord(this.mapPos);
-      console.log(locationsData);
     }
   }
 };

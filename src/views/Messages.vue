@@ -5,17 +5,54 @@
       <div class="messages__left__img">
         <messages-icon />
       </div>
+      <div class="messages__left__message-list">
+        <user-list-item
+          v-for="message in messageWithUsers"
+          :key="message.id"
+          :linkId="message.id"
+          :user="message.from"
+          @click="goToMessageDetail"
+        />
+      </div>
     </div>
-    <div class="messages__right"></div>
+    <div class="messages__right">
+      <router-view />
+    </div>
   </div>
 </template>
 
 <script>
 import MessagesIcon from '@/assets/messages.svg';
+import UserListItem from '@/components/UserListItem';
+import { mapActions, mapState } from 'vuex';
 export default {
   name: 'Messages',
+  methods: {
+    goToMessageDetail(id) {
+      this.$router
+        .push({
+          name: 'messageDetail',
+          params: { id, message: this.messageWithUsers.find(m => m.id === id) }
+        })
+        .catch(() => {});
+    }
+  },
+  computed: {
+    ...mapState('locations', ['messages', 'users']),
+    messageWithUsers() {
+      return this.messages.map(message => {
+        const from = this.users.find(u => u.uid === message.from_uid);
+        return {
+          id: message.id,
+          body: message.body,
+          from
+        };
+      });
+    }
+  },
   components: {
-    MessagesIcon
+    MessagesIcon,
+    UserListItem
   }
 };
 </script>
@@ -30,6 +67,8 @@ export default {
   &__left {
     width: 500px;
     padding: 30px;
+    display: flex;
+    flex-direction: column;
 
     h1 {
       color: #e63362;
@@ -44,8 +83,10 @@ export default {
       margin-top: 30px;
     }
 
-    &__user-list {
+    &__message-list {
       margin-top: 30px;
+      overflow-y: scroll;
+      flex: 1;
 
       .user-list-item + div {
         margin-top: 20px;
