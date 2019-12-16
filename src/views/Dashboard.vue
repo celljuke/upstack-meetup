@@ -7,35 +7,45 @@
         <up-avatar :avatar-image="userInfo.avatar" :size="100" />
         <span class="dashboard__left__avatar__name">{{ userInfo.name }}</span>
         <span class="dashboard__left__avatar__location">
-          {{
-          userInfo.location
-          }}
+          {{ userInfo.location }}
         </span>
       </div>
       <div class="dashboard__left__statistics">
         <div class="dashboard__left__statistics__statistic">
-          <span class="dashboard__left__statistics__statistic__label">Places</span>
+          <span class="dashboard__left__statistics__statistic__label"
+            >Places</span
+          >
           <span class="dashboard__left__statistics__statistic__value">29</span>
         </div>
         <div class="dashboard__left__statistics__statistic">
-          <span class="dashboard__left__statistics__statistic__label">Friends</span>
+          <span class="dashboard__left__statistics__statistic__label"
+            >Friends</span
+          >
           <span class="dashboard__left__statistics__statistic__value">56</span>
         </div>
       </div>
       <div class="dashboard__left__divider"></div>
       <div class="dashboard__left__menu">
         <div class="dashboard__left__menu__item">
-          <router-link to="/find-your-friends" class="dashboard__left__menu__item__link">
-            <span class="dashboard__left__menu__item__link__label">Find your friends</span>
+          <router-link
+            to="/find-your-friends"
+            class="dashboard__left__menu__item__link"
+          >
+            <span class="dashboard__left__menu__item__link__label"
+              >Find your friends</span
+            >
           </router-link>
         </div>
         <div class="dashboard__left__menu__item">
           <router-link to="/messages" class="dashboard__left__menu__item__link">
-            <span class="dashboard__left__menu__item__link__label">Messages</span>
+            <span class="dashboard__left__menu__item__link__label"
+              >Messages</span
+            >
             <span
               class="dashboard__left__menu__item__link__count"
               v-if="messagesCount"
-            >{{ messagesCount }}</span>
+              >{{ messagesCount }}</span
+            >
           </router-link>
         </div>
         <div class="dashboard__left__menu__item">
@@ -44,8 +54,13 @@
           </router-link>
         </div>
         <div class="dashboard__left__menu__item">
-          <router-link to="/where-to-next" class="dashboard__left__menu__item__link">
-            <span class="dashboard__left__menu__item__link__label">Where to next?</span>
+          <router-link
+            to="/where-to-next"
+            class="dashboard__left__menu__item__link"
+          >
+            <span class="dashboard__left__menu__item__link__label"
+              >Where to next?</span
+            >
           </router-link>
         </div>
       </div>
@@ -67,7 +82,7 @@
 import MeetupLogo from '@/assets/meetup-logo.svg';
 import Logout from '@/assets/images/icons/logout.svg';
 import UpAvatar from '@/components/UpAvatar.vue';
-import AvatarImage from '@/assets/sk.jpeg';
+import AvatarImage from '@/assets/empty-profile.jpg';
 import { mapState, mapActions } from 'vuex';
 import UpLoader from '@/components/UpLoader';
 export default {
@@ -102,7 +117,7 @@ export default {
 
       return {
         name: `${currentUser.first_name} ${currentUser.last_name}`,
-        avatar: currentUser.avatar,
+        avatar: currentUser.avatar || this.avatarImage,
         location: `${userLocation && userLocation.city}, ${userLocation &&
           userLocation.country}`
       };

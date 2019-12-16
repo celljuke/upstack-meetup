@@ -33,6 +33,9 @@ export default {
   register({ commit }, user) {
     return axiosInstance.post('register', user);
   },
+  createProfile({ commit }, location) {
+    return axiosInstance.post('locations', location);
+  },
   validateEmail({ commit }, data) {
     return new Promise((resolve, reject) => {
       axiosInstance({

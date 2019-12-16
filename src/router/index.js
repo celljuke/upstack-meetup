@@ -9,6 +9,8 @@ import UserDetail from '../views/UserDetail.vue';
 import Messages from '../views/Messages.vue';
 import MessageDetail from '../views/MessageDetail.vue';
 import Invite from '../views/Invite.vue';
+import CreateProfile from '../views/CreateProfile.vue';
+import WhereToNext from '../views/WhereToNext.vue';
 
 Vue.use(VueRouter);
 
@@ -27,6 +29,14 @@ const routes = [
     path: '/register',
     name: 'register',
     component: Register
+  },
+  {
+    path: '/create-profile',
+    name: 'createProfile',
+    component: CreateProfile,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/dashboard',
@@ -77,6 +87,14 @@ const routes = [
         path: '/invite',
         name: 'invite',
         component: Invite,
+        meta: {
+          requiresAuth: true
+        }
+      },
+      {
+        path: '/where-to-next',
+        name: 'whereToNext',
+        component: WhereToNext,
         meta: {
           requiresAuth: true
         }

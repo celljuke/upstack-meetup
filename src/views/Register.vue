@@ -122,7 +122,7 @@ export default {
       };
       this.register(credendials)
         .then(({ data }) => {
-          this.$router.push(this.$route.query.redirect || '/dashboard');
+          this.$router.push('/create-profile');
         })
         .catch(error => {});
     }

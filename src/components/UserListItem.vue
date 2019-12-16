@@ -1,17 +1,17 @@
 <template>
   <div class="user-list-item" @click="goToDetail">
-    <up-avatar :avatar-image="userInfo.avatar" :size="50" line-color="#008EF4" />
+    <up-avatar
+      :avatar-image="userInfo.avatar"
+      :size="50"
+      line-color="#008EF4"
+    />
     <div class="user-list-item__user-info">
       <div class="user-list-item__user-info__user-name">
         <span class="user-list-item__user-info__user-name__name">
-          {{
-          userInfo.name
-          }}
+          {{ userInfo.name }}
         </span>
         <span class="user-list-item__user-info__user-name__location">
-          {{
-          userInfo.location
-          }}
+          {{ userInfo.location }}
         </span>
       </div>
     </div>
@@ -21,6 +21,7 @@
 <script>
 import UpAvatar from '@/components/UpAvatar.vue';
 import { mapState, mapActions } from 'vuex';
+import AvatarImage from '@/assets/empty-profile.jpg';
 export default {
   name: 'UserListItem',
   props: {
@@ -42,7 +43,7 @@ export default {
 
       return {
         name: `${this.user.first_name} ${this.user.last_name}`,
-        avatar: this.user.avatar,
+        avatar: this.user.avatar || AvatarImage,
         location: `${userLocation.city}, ${userLocation.country}`
       };
     }

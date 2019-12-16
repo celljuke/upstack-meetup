@@ -5,13 +5,21 @@
         <back />
       </div>
       <div class="message-detail__header__avatar">
-        <up-avatar :avatar-image="messageInfo.avatar" :size="100" line-color="#fff" />
-        <span class="message-detail__header__avatar__name">{{messageInfo.name}}</span>
-        <span class="message-detail__header__avatar__location">{{messageInfo.location}}</span>
+        <up-avatar
+          :avatar-image="messageInfo.avatar"
+          :size="100"
+          line-color="#fff"
+        />
+        <span class="message-detail__header__avatar__name">{{
+          messageInfo.name
+        }}</span>
+        <span class="message-detail__header__avatar__location">{{
+          messageInfo.location
+        }}</span>
       </div>
     </div>
     <div class="message-detail__body">
-      <p>{{messageInfo.body}}</p>
+      <p>{{ messageInfo.body }}</p>
     </div>
   </div>
 </template>

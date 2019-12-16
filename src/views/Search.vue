@@ -42,7 +42,7 @@ import FindFriends from '@/assets/find-friends.svg';
 import UserListItem from '@/components/UserListItem';
 import UpLoader from '@/components/UpLoader';
 
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapState, mapGetters } from 'vuex';
 
 export default {
   name: 'Search',
@@ -61,26 +61,20 @@ export default {
   },
   computed: {
     ...mapState('locations', ['users', 'allLocations']),
+    ...mapGetters('locations', ['usersWithLocations']),
     isRouteUserDetail() {
       return this.$route.name === 'userDetail';
     },
     filteredUsers() {
-      const usersWithLocations = this.users.map(user => {
-        const location = this.allLocations.find(l => l.user_uid === user.uid);
-        return {
-          ...user,
-          location
-        };
-      });
       if (this.mapPos && this.mapPos.name) {
-        return usersWithLocations.filter(
+        return this.usersWithLocations.filter(
           u =>
-            u.location.city == this.mapPos.name ||
-            u.location.country == this.mapPos.name
+            u.location.city === this.mapPos.name ||
+            u.location.country === this.mapPos.name
         );
       }
 
-      return usersWithLocations.filter(u => u.id < 20);
+      return this.usersWithLocations.filter(u => u.id < 20);
     }
   },
   methods: {
