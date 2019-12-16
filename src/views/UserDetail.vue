@@ -13,9 +13,9 @@
         <span class="user-detail__header__avatar__name">{{
           userInfo.name
         }}</span>
-        <span class="user-detail__header__avatar__location"
-          >Bucharest, Romania</span
-        >
+        <span class="user-detail__header__avatar__location">{{
+          userInfo.location
+        }}</span>
       </div>
     </div>
   </div>
@@ -42,8 +42,8 @@ export default {
 
       return {
         name: `${user.first_name} ${user.last_name}`,
-        avatar: user.avatar
-        //location: `${userLocation.country},${userLocation.city}`
+        avatar: user.avatar,
+        location: `${userLocation.city}, ${userLocation.country}`
       };
     }
   }

@@ -42,8 +42,8 @@ export default {
 
       return {
         name: `${this.user.first_name} ${this.user.last_name}`,
-        avatar: this.user.avatar
-        //location: `${userLocation.country},${userLocation.city}`
+        avatar: this.user.avatar,
+        location: `${userLocation.city}, ${userLocation.country}`
       };
     }
   },

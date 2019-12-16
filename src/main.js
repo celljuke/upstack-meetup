@@ -18,7 +18,7 @@ if (token) {
 
 Vue.use(VueGoogleMaps, {
   load: {
-    key: 'AIzaSyAyQwsA5JzDrwCcxmnDDdxv-UQMVTHA2DU',
+    key: 'AIzaSyC12XQ6mbTTSU3jTsk9TWwb-p8zOIYq77U',
     libraries: 'places', // This is required if you use the Autocomplete plugin
     // OR: libraries: 'places,drawing'
     // OR: libraries: 'places,drawing,visualization'

@@ -101,8 +101,8 @@ export default {
 
       return {
         name: `${currentUser.first_name} ${currentUser.last_name}`,
-        avatar: currentUser.avatar
-        //location: `${userLocation.country},${userLocation.city}`
+        avatar: currentUser.avatar,
+        location: `${userLocation.city}, ${userLocation.country}`
       };
     },
     messagesCount() {
