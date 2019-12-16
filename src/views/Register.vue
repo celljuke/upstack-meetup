@@ -13,60 +13,64 @@
           <div class="register__background__form-wrapper__form">
             <h1>Create an account</h1>
             <div class="form-elements">
-              <up-input
-                v-model="firstName"
-                placeholder="First name"
-                type="text"
-                name="firstName"
-                @focus="setActive('firstName', true)"
-                @blur="setActive('firstName', false)"
-                :height="55"
-                :is-active="hasActive('firstName') || !!firstName.length"
-                bg-color="#EAEAEA"
-              />
-              <up-input
-                v-model="lastName"
-                placeholder="Last name"
-                type="text"
-                name="lastName"
-                @focus="setActive('lastName', true)"
-                @blur="setActive('lastName', false)"
-                :height="55"
-                :is-active="hasActive('lastName') || !!lastName.length"
-                bg-color="#EAEAEA"
-              />
-              <up-input
-                v-model="email"
-                placeholder="Email"
-                type="text"
-                name="email"
-                @focus="setActive('mail', true)"
-                @blur="setActive('mail', false)"
-                :height="55"
-                :is-active="hasActive('mail') || !!email.length"
-                bg-color="#EAEAEA"
-              />
-              <up-input
-                v-model="password"
-                type="password"
-                placeholder="Password"
-                name="password"
-                :height="55"
-                @focus="setActive('password', true)"
-                @blur="setActive('password', false)"
-                :is-active="hasActive('password') || !!password.length"
-                bg-color="#EAEAEA"
-              />
-              <div class="form-elements__buttons">
-                <up-button
-                  label="Continue"
-                  button-type="primary"
-                  width="100%"
-                  height="50px"
-                  font-size="18px"
-                  @click="submitRegister"
+              <form @submit.prevent="submitRegister">
+                <up-input
+                  v-model="firstName"
+                  placeholder="First name"
+                  type="text"
+                  name="firstName"
+                  @focus="setActive('firstName', true)"
+                  @blur="setActive('firstName', false)"
+                  :height="55"
+                  :is-active="hasActive('firstName') || !!firstName.length"
+                  bg-color="#EAEAEA"
                 />
-              </div>
+                <up-input
+                  v-model="lastName"
+                  placeholder="Last name"
+                  type="text"
+                  name="lastName"
+                  @focus="setActive('lastName', true)"
+                  @blur="setActive('lastName', false)"
+                  :height="55"
+                  :is-active="hasActive('lastName') || !!lastName.length"
+                  bg-color="#EAEAEA"
+                />
+                <up-input
+                  v-model="email"
+                  placeholder="Email"
+                  type="text"
+                  name="email"
+                  @focus="setActive('mail', true)"
+                  @blur="setActive('mail', false)"
+                  :height="55"
+                  :is-active="hasActive('mail') || !!email.length"
+                  bg-color="#EAEAEA"
+                />
+                <up-input
+                  v-model="password"
+                  type="password"
+                  placeholder="Password"
+                  name="password"
+                  :height="55"
+                  @focus="setActive('password', true)"
+                  @blur="setActive('password', false)"
+                  :is-active="hasActive('password') || !!password.length"
+                  bg-color="#EAEAEA"
+                />
+                <div class="form-elements__buttons">
+                  <up-button
+                    label="Continue"
+                    button-type="primary"
+                    width="100%"
+                    height="50px"
+                    font-size="18px"
+                    @click="submitRegister"
+                    :is-loading="isLoading"
+                    type="submit"
+                  />
+                </div>
+              </form>
             </div>
           </div>
         </div>
@@ -96,7 +100,8 @@ export default {
       lastName: '',
       email: '',
       password: '',
-      activeInputs: []
+      activeInputs: [],
+      isLoading: false
     };
   },
   methods: {
@@ -112,6 +117,7 @@ export default {
       return !!this.activeInputs.find(a => a === type);
     },
     submitRegister() {
+      this.isLoading = true;
       const credendials = {
         user: {
           first_name: this.firstName,
@@ -124,7 +130,8 @@ export default {
         .then(({ data }) => {
           this.$router.push('/create-profile');
         })
-        .catch(error => {});
+        .catch(error => {})
+        .finally(() => (this.isLoading = false));
     }
   }
 };

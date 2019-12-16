@@ -13,29 +13,33 @@
           <div class="register__background__form-wrapper__form">
             <h1>Create your profile</h1>
             <div class="form-elements">
-              <div class="up-input-wrapper">
-                <div class="up-input">
-                  <div class="up-input__input-control">
-                    <gmap-autocomplete @place_changed="getPlace" />
+              <form @submit.prevent="submitCreateProfile">
+                <div class="up-input-wrapper">
+                  <div class="up-input">
+                    <div class="up-input__input-control">
+                      <gmap-autocomplete @place_changed="getPlace" />
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div>
-                <textarea
-                  class="up-textarea"
-                  placeholder="Short bio"
-                ></textarea>
-              </div>
-              <div class="form-elements__buttons">
-                <up-button
-                  label="Continue"
-                  button-type="primary"
-                  width="100%"
-                  height="50px"
-                  font-size="18px"
-                  @click="submitCreateProfile"
-                />
-              </div>
+                <div>
+                  <textarea
+                    class="up-textarea"
+                    placeholder="Short bio"
+                  ></textarea>
+                </div>
+                <div class="form-elements__buttons">
+                  <up-button
+                    label="Continue"
+                    button-type="primary"
+                    width="100%"
+                    height="50px"
+                    font-size="18px"
+                    @click="submitCreateProfile"
+                    :is-loading="isLoading"
+                    type="submit"
+                  />
+                </div>
+              </form>
             </div>
           </div>
         </div>
@@ -65,7 +69,8 @@ export default {
       email: '',
       password: '',
       activeInputs: [],
-      location: {}
+      location: {},
+      isLoading: false
     };
   },
   methods: {
@@ -90,11 +95,13 @@ export default {
       return !!this.activeInputs.find(a => a === type);
     },
     submitCreateProfile() {
+      this.isLoading = true;
       this.createProfile({ location: this.location })
         .then(({ data }) => {
           this.$router.push('/dashboard');
         })
-        .catch(error => {});
+        .catch(error => {})
+        .finally(() => (this.isLoading = false));
     }
   }
 };
